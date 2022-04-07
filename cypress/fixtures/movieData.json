@@ -1,0 +1,13 @@
+[
+  {
+  "query": "Superman",
+  "type": "movie",
+  "limit": 10
+  },
+  {
+    "query": "Batman",
+    "type": "movie",
+    "limit": 5
+  }
+]
+
