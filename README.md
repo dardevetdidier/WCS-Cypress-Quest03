@@ -9,7 +9,7 @@
 
 3. Environment Variable
 
-    - At the root of the project create a file `cypres.env.json` containing :
+    - At the root of the project create a file `cypress.env.json` containing :
     ```
     {
         "API_KEY": "YourTasteDiveAPIKEY"
