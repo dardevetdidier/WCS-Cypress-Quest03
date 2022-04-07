@@ -1,8 +1,8 @@
 [
   {
-  "query": "Superman",
-  "type": "movie",
-  "limit": 10
+    "query": "Superman",
+    "type": "movie",
+    "limit": 10
   },
   {
     "query": "Batman",
