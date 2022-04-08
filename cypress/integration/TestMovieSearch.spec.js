@@ -1,43 +1,52 @@
+/// <reference types="Cypress" />
+
+
 describe("Search Movies TasteDive API suite tests", () => {
-    let movie = require('../fixtures/movieData')
-    const apiKey = `${Cypress.env('API_KEY')}`
+    let movies = require('../fixtures/movieData')
+    const apiKey = Cypress.env('API_KEY')
 
     it('Should return status 200', () => {
-        cy.movieSearchTasteDive(movie[0].query, movie[0].type, movie[0].limit, apiKey)
+        cy.movieSearchTasteDive(movies[0].query, movies[0].type, movies[0].limit, apiKey)
             .then(response => {
                 expect(response.status).to.eql(200)
             })
     })
 
     it("Response should have valid schema", () => {
-        cy.movieSearchTasteDive(movie[1].query, movie[1].type, movie[1].limit, apiKey)
+        for (let i=0; i<movies.length; i++) {
+            cy.movieSearchTasteDive(movies[i].query, movies[i].type, movies[i].limit, apiKey)
             .then(response => {
-                expect(response.body).to.have.property('Similar')
-                expect(response.body.Similar).to.have.property('Info')
-                expect(response.body.Similar).to.have.property('Results')
+                expect(response.body).to.have.property('Similar');
+                expect(response.body.Similar).to.have.property('Info').to.be.an("array");
+                expect(response.body.Similar).to.have.property('Results').to.be.an("array");
 
                 let resultsArray = response.body.Similar.Results;
                 resultsArray.forEach(element => {
-                    expect(element).to.have.property('Name')
-                    expect(element).to.have.property('Type')
+                    expect(element).to.have.property('Name').to.be.a("string");
+                    expect(element).to.have.property('Type').to.be.a("string");
                 })
             })
+        }
+        
     })
 
     it("Should be movie type", () => {
-        cy.movieSearchTasteDive(movie[1].query, movie[1].type, movie[1].limit, apiKey)
+        for (let i=0; i<movies.length; i++){
+            cy.movieSearchTasteDive(movies[i].query, movies[i].type, movies[i].limit, apiKey)
             .then(response => {
                 let resultsArray = response.body.Similar.Results;
                 resultsArray.forEach(element => {
-                    expect(element.Type).to.equal("movie");
+                    expect(element.Type).to.equal(movies[i].type);
                 })
             })
+        }
+        
     })
 
     it('Should have number of results equal max to limit', () => {
-        cy.movieSearchTasteDive(movie[0].query, movie[0].type, movie[0].limit, apiKey)
+        cy.movieSearchTasteDive(movies[0].query, movies[0].type, movies[0].limit, apiKey)
             .then(response => {
-                expect(response.body.Similar.Results.length).to.be.at.most(movie[0].limit)
+                expect(response.body.Similar.Results.length).to.be.at.most(movies[0].limit)
             })
     })
 })
